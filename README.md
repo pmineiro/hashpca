@@ -6,7 +6,7 @@ Scalable PCA via Hashing
 Description
 -----------
 
-This software provides a highly scalable SVD/PCA implementation using
+This software provides a highly scalable truncated SVD/PCA implementation using
 a combination of hashing and randomized linear algebra techniques.
 
 The memory usage is independent of the number of examples so you will
