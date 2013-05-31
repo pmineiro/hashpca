@@ -47,8 +47,6 @@
 #include <iostream>
 #include <Eigen/Eigenvalues>
 
-#include <fenv.h>
-
 #define FUDGE 10
 
 namespace
@@ -153,7 +151,8 @@ namespace
         << (options.dashq ? static_cast<unsigned char> (options.dashq[1]) : -1) 
         << std::endl;
 
-      model << s.reverse ().topRows (s.rows () - FUDGE) << std::endl;
+      Eigen::IOFormat HeavyFmt (Eigen::FullPrecision);
+      model << s.reverse ().topRows (s.rows () - FUDGE).format (HeavyFmt) << std::endl;
 
       Eigen::VectorXd mean;
 
@@ -162,7 +161,7 @@ namespace
       else
         mean = Eigen::VectorXd::Zero (V.cols ());
 
-      mean = mean.reverse ();
+      mean = mean.reverse ().eval ();
 
       // http://forum.kde.org/viewtopic.php?f=74&t=107161
 
