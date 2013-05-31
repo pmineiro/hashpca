@@ -12,6 +12,8 @@ a combination of hashing and randomized linear algebra techniques.
 The memory usage is independent of the number of examples so you will
 never run out of memory.  
 
+[libeigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) is required to build.  I use version 3.1.2.
+
 Directions
 -----------
 
