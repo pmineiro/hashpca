@@ -42,12 +42,14 @@
 #define __ITERATOR_HH__
 
 #include <cstdlib>
-#include <Eigen/Sparse>
 #include <Eigen/Dense>
 #include "parse.hh"
 
 namespace hashpca 
 {
+  typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
+          MatrixXd;
+
   template<typename S,
            typename T>
   struct Times
@@ -224,7 +226,7 @@ namespace hashpca
 
       template<typename Iterator>
       SugaryVectorXd&
-      operator= (Times<Transposed<Iterator>, const Eigen::MatrixXd&> op)
+      operator= (Times<Transposed<Iterator>, const hashpca::MatrixXd&> op)
         {
           setZero (size ());
 
@@ -245,8 +247,8 @@ namespace hashpca
     }
 
   template<typename Iterator>
-  Eigen::MatrixXd&
-  operator+= (Eigen::MatrixXd&                                  x,
+  hashpca::MatrixXd&
+  operator+= (hashpca::MatrixXd&                                x,
               Times<Times<double, Iterator>, SugaryVectorXd&>   op)
     {
       op.left.right.foreach ([&] (const veedubparse::Feature& f) {

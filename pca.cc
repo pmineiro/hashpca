@@ -92,12 +92,12 @@ namespace
     }
 
   void
-  orthonormalize (Eigen::MatrixXd& Y)
+  orthonormalize (hashpca::MatrixXd& Y)
     {
       // // http://forum.kde.org/viewtopic.php?f=74&t=91271
       // // Unfortunately this appears memory intensive :(
-      // Eigen::HouseholderQR<Eigen::MatrixXd> qr (Y);
-      // Y = qr.householderQ () * Eigen::MatrixXd::Identity (Y.rows (), Y.cols ());
+      // Eigen::HouseholderQR<hashpca::MatrixXd> qr (Y);
+      // Y = qr.householderQ () * hashpca::MatrixXd::Identity (Y.rows (), Y.cols ());
 
       // Gram-Schmidt has no space overhead
       for (unsigned int j = 0; j < Y.cols (); ++j)
@@ -113,13 +113,13 @@ namespace
     }
 
   Eigen::VectorXd
-  smallsvd (const Eigen::MatrixXd& Z,
-            Eigen::MatrixXd&       V)
+  smallsvd (const hashpca::MatrixXd& Z,
+            hashpca::MatrixXd&       V)
     {
-      Eigen::MatrixXd ZtZ = Z.transpose () * Z;
-      Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es (ZtZ);
+      hashpca::MatrixXd ZtZ = Z.transpose () * Z;
+      Eigen::SelfAdjointEigenSolver<hashpca::MatrixXd> es (ZtZ);
       Eigen::VectorXd s = es.eigenvalues ();
-      Eigen::MatrixXd Upsilon = es.eigenvectors ();
+      hashpca::MatrixXd Upsilon = es.eigenvectors ();
 
       s = s.unaryExpr ([] (double x) { return x <= 0.0 ? 0.0 : sqrt (x); });
 
@@ -133,12 +133,12 @@ namespace
     }
 
   int  
-  writemodel (PcaOptions             options,
-              std::ostream&          model,
-              const Eigen::MatrixXd& V,
-              const Eigen::VectorXd& s,
-              const Eigen::VectorXd& sum,
-              double                 n)
+  writemodel (PcaOptions                options,
+              std::ostream&             model,
+              const hashpca::MatrixXd&  V,
+              const Eigen::VectorXd&    s,
+              const Eigen::VectorXd&    sum,
+              double                    n)
     {
       std::cerr << "Writing model ... ";
 
@@ -190,11 +190,11 @@ namespace
     }
 
   int  
-  readmodel (PcaOptions       options,
-             std::istream&    model,
-             Eigen::MatrixXd& V,
-             Eigen::VectorXd& s,
-             Eigen::VectorXd& mean)
+  readmodel (PcaOptions         options,
+             std::istream&      model,
+             hashpca::MatrixXd& V,
+             Eigen::VectorXd&   s,
+             Eigen::VectorXd&   mean)
     {
       model >> options.hashsize >> options.rank;
 
@@ -257,7 +257,7 @@ namespace
           return 1;
         }
 
-      Eigen::MatrixXd V;
+      hashpca::MatrixXd V;
       Eigen::VectorXd s;
       Eigen::VectorXd mean;
 
@@ -322,8 +322,8 @@ namespace
 
       options.rank += FUDGE;
 
-      Eigen::MatrixXd Y; Y.setZero (options.hashsize, options.rank);
-      Eigen::MatrixXd Omega (options.hashsize, options.rank);
+      hashpca::MatrixXd Y; Y.setZero (options.hashsize, options.rank);
+      hashpca::MatrixXd Omega (options.hashsize, options.rank);
       Eigen::VectorXd sum;
 
       Omega = Omega.unaryExpr (std::ptr_fun (gensample));
@@ -354,7 +354,7 @@ namespace
       std::cerr << "done." << std::endl;
 
       std::cerr << "Reprocessing examples ... ";
-      Eigen::MatrixXd& Z (Omega);
+      hashpca::MatrixXd& Z (Omega);
       Z.setZero (Z.rows (), Z.cols ());
 
       std::pair<double, uint64_t> lines2;
@@ -378,7 +378,7 @@ namespace
                 << lines2.second << ") done." << std::endl;
 
       std::cerr << "Small svding + postprocessing ... ";
-      Eigen::MatrixXd& V (Y);
+      hashpca::MatrixXd& V (Y);
       Eigen::VectorXd s = smallsvd (Z, V);
       std::cerr << "done." << std::endl;
 

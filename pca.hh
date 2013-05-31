@@ -50,12 +50,12 @@ namespace hashpca
 {
   template<typename Iterator>
   std::pair<double, uint64_t>
-  pca_accumulate (std::istream&          in,
-                  Eigen::MatrixXd&       Y,
-                  const Eigen::MatrixXd& Omega,
-                  Iterator&              iterator,
-                  bool                   center,
-                  Eigen::VectorXd&       sum)
+  pca_accumulate (std::istream&            in,
+                  hashpca::MatrixXd&       Y,
+                  const hashpca::MatrixXd& Omega,
+                  Iterator&                iterator,
+                  bool                     center,
+                  Eigen::VectorXd&         sum)
     {
       std::pair<double, uint64_t> rv (0.0, 0);
       veedubparse::StandardParse<veedubparse::HashString> parse;
@@ -105,14 +105,14 @@ namespace hashpca
 
   template<typename Iterator>
   int 
-  computeu (std::istream&          in,
-            std::ostream&          out,
-            const Eigen::MatrixXd& V,
-            const Eigen::VectorXd& mean,
-            const Eigen::VectorXd& sinv,
-            Iterator               iterator,
-            bool                   tanhify,
-            bool                   normalize)
+  computeu (std::istream&            in,
+            std::ostream&            out,
+            const hashpca::MatrixXd& V,
+            const Eigen::VectorXd&   mean,
+            const Eigen::VectorXd&   sinv,
+            Iterator                 iterator,
+            bool                     tanhify,
+            bool                     normalize)
     {
       veedubparse::StandardParse<veedubparse::HashString> parse;
       SugaryVectorXd Vtx (V.cols ());
