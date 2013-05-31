@@ -5,7 +5,7 @@ In this demo PCA is applied recursively to build a low-rank primal
 approximation to a (3rd-order) polynomial kernel.  This is used 
 with l1-regularized logistic regression on (permutation-invariant) mnist
 yielding 176 test errors with vowpal wabbit 7.2.  liblinear can achieve 150 
-test errors with the same design matrix, but it requires >64G of ram so the 
+test errors with the same design matrix, but it requires >16G of ram so the 
 demo here uses vowpal wabbit.
 
 To execute the demo, type `make demo`.  This will:
