@@ -41,3 +41,4 @@ Directions
         > 6.9 mytag|0 1 2:4 28:0.5
 
  will have features 1, 2, and 28 with values 1, 4, and 0.5 respectively.  It also has an importance weight of 6.9, no label, and a tag of `mytag`.
+4. The `demos/` directory contains working examples.
