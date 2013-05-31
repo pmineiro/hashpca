@@ -21,10 +21,10 @@ Directions
 -----------
 
 0. The basic workflow looks like:
-	1. Build a model.  Using PCA terminology, the (hashed image of) the top principal components end up in the model file.  Using SVD terminology, the (hashed image of) the right singular components end up in the model file.
+	1. Build a model.  Using PCA terminology, the (hashed image of) the loadings end up in the model file.  Using SVD terminology, the (hashed image of) the right singular components end up in the model file.
 
         > pca -c -k 100 -m testmodel inputdata
-	2. Use a model.  Using PCA terminology, the whitened loadings are output.  Using SVD terminology, the left singular components are output.
+	2. Use a model.  Using PCA terminology, the whitened component scores are output.  Using SVD terminology, the left singular components are output.
 
         > pca -t -m testmodel inputdata  
 1. The software expects input in [vowpal wabbit format](https://github.com/JohnLangford/vowpal_wabbit/wiki/Input-format).  
