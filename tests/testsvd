@@ -1,5 +1,17 @@
 #! /bin/zsh
 
+test -x ../pca || {
+  echo 1>&2
+  echo "ERROR: you need to compile pca first" 1>&2
+  exit 1
+}
+
+test -x $(which octave) || {
+  echo 1>&2
+  echo "ERROR: you need octave to run the tests" 1>&2
+  exit 1
+}
+
 INDEXIFY='next if /^#/ or /^$/;
 	  print join " ", "", map { "@{[1+$_]}:$F[$_]" } (0 .. $#F);'
 
@@ -31,9 +43,9 @@ FUZZYDIFF='$a = new IO::File $ARGV[0], "r" or die;
 
 set -e
 
-octave -q testpca.m
-./pca -c -k 100 -m testmodel <(perl -lane ${INPUTIFY} data) <(perl -lane ${INPUTIFY} data)
+octave -q testsvd.m
+../pca -k 100 -m testmodel <(perl -lane ${INPUTIFY} data) <(perl -lane ${INPUTIFY} data)
 perl -e ${FUZZYDIFF}                                            \
-  <(./pca -t -m testmodel <(perl -lane ${INPUTIFY} data))       \
+  <(../pca -t -m testmodel <(perl -lane ${INPUTIFY} data))      \
   <(perl -lane ${INDEXIFY} u)
 rm -f data s u v testmodel

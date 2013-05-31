@@ -7,10 +7,3 @@ clean:
 
 pca: pca.cc MurmurHash3.cpp $(wildcard *.hh)
 	c++ $(CXXFLAGS) `pkg-config --cflags eigen3` $(word 1,$^) $(word 2,$^) -o $@
-
-check: testsvd.ok testpca.ok
-
-%.ok: %
-	@printf "%s" "=== running test $(word 1,$^) ===" 1>&2
-	@./$(word 1,$^)
-	@echo "=== $(word 1,$^) passed ===" 1>&2
