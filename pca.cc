@@ -99,17 +99,21 @@ namespace
       // Eigen::HouseholderQR<hashpca::MatrixXd> qr (Y);
       // Y = qr.householderQ () * hashpca::MatrixXd::Identity (Y.rows (), Y.cols ());
 
+      Y.transposeInPlace ();
+
       // Gram-Schmidt has no space overhead
-      for (unsigned int j = 0; j < Y.cols (); ++j)
+      for (unsigned int j = 0; j < Y.rows (); ++j)
         {
           for (unsigned int i = 0; i < j; ++i)
-            Y.col (j) -= Y.col (i).dot (Y.col (j)) * Y.col (i);
+            Y.row (j) -= Y.row (i).dot (Y.row (j)) * Y.row (i);
 
           for (unsigned int i = 0; i < j; ++i)
-            Y.col (j) -= Y.col (i).dot (Y.col (j)) * Y.col (i);
+            Y.row (j) -= Y.row (i).dot (Y.row (j)) * Y.row (i);
 
-          Y.col (j).normalize ();
+          Y.row (j).normalize ();
         }
+
+      Y.transposeInPlace ();
     }
 
   Eigen::VectorXd
