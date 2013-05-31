@@ -12,7 +12,7 @@ all:
 demo: svd.test.confusion
 
 clean:
-	rm -f $(wildcard svd.feats sqsvd.feats extractfeatures *.cache* *.predictions)
+	rm -f $(wildcard svd.feats sqsvd.feats svd.model extractfeatures *.cache* *.predictions)
 
 %.check:
 	@test -x "$$(which $*)" || {				\

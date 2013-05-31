@@ -112,7 +112,8 @@ namespace hashpca
             const Eigen::VectorXd&   sinv,
             Iterator                 iterator,
             bool                     tanhify,
-            bool                     normalize)
+            bool                     normalize,
+            bool                     flush)
     {
       veedubparse::StandardParse<veedubparse::HashString> parse;
       SugaryVectorXd Vtx (V.cols ());
@@ -140,7 +141,10 @@ namespace hashpca
                    for (unsigned int i = 0; i < V.cols (); ++i)
                      out << " " << (i+1) << ":" << u (i);
 
-                   out << std::endl << std::flush;
+                   out << std::endl;
+                   
+                   if (flush)
+                     out << std::flush;
                  }
               });
 

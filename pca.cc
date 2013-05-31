@@ -278,13 +278,13 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize);
+          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize);
+          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
         }
     }
 
