@@ -1,0 +1,14 @@
+n=5000;
+d=200;
+k=100;
+A=randn(n,k);
+B=randn(k,d);
+N=0.01*randn(n,d);
+X=A*B+N;
+[u,s,v]=svds(X/sqrt(n),k);
+% uprime=X*v*inv(s); 
+uprime=sqrt(n)*u;
+save 'data' X;
+save 'u' uprime;
+save 's' s;
+save 'v' v;

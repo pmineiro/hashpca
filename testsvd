@@ -1,0 +1,39 @@
+#! /bin/zsh
+
+INDEXIFY='next if /^#/ or /^$/;
+	  print join " ", "", map { "@{[1+$_]}:$F[$_]" } (0 .. $#F);'
+
+INPUTIFY='next if /^#/ or /^$/;
+	  print " |0 ", join " ", map { "$_:$F[$_]" } (0 .. $#F);'
+
+FUZZYDIFF='$a = new IO::File $ARGV[0], "r" or die;			
+           $b = new IO::File $ARGV[1], "r" or die;			
+	   while ($la = <$a> and $lb = <$b>)			        
+	     {								
+	       $la =~ s/^s+//;					        
+	       $lb =~ s/^s+//;					        
+	       @fa = split /s+/, $la;					
+	       @fb = split /s+/, $lb;					
+	       die "wtf 1 $#fa $#fb" unless @fa == @fb;		
+	       while (@fa)						
+	  	 {							
+		   $fal = pop @fa; $fbl = pop @fb; 			
+		   ($xa, $va) = split /:/, $fal;  			
+		   ($xb, $vb) = split /:/, $fbl;  			
+		   die "wtf 2 $fal $xa $fbl $xb" unless $xa == $xb;	
+		   die "wtf 3 $fal $va $fbl $vb" unless abs (abs ($va) - abs ($vb)) < 1e-3 * (1e-3 + abs ($va) + abs ($vb));	
+		 }							
+	     }								
+	   die "wtf too many a" unless $a->eof ();			
+	   die "wtf too many b" unless $b->eof ();			
+	   print STDERR "fuzzy diff passed\n";				
+	   exit 0;'
+
+set -e
+
+octave -q testsvd.m
+./pca -k 100 -m testmodel <(perl -lane ${INPUTIFY} data) <(perl -lane ${INPUTIFY} data)
+perl -e ${FUZZYDIFF}                                            \
+  <(./pca -t -m testmodel <(perl -lane ${INPUTIFY} data))       \
+  <(perl -lane ${INDEXIFY} u)
+rm -f data s u v testmodel

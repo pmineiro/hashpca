@@ -11,7 +11,7 @@ clean:
 pca: pca.cc MurmurHash3.cpp $(wildcard *.hh)
 	c++ $(CXXFLAGS) $(EIGENCFLAGS) $(word 1,$^) $(word 2,$^) -o $@
 
-check: testpca.ok
+check: testsvd.ok testpca.ok
 
 %.ok: %
 	@printf "%s" "=== running test $(word 1,$^) ===" 1>&2
