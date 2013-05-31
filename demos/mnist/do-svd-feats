@@ -1,0 +1,21 @@
+#! /bin/zsh
+
+time ../../pca -c -k 40 -m $3                   \
+<(paste -d' '                                   \
+  <(zcat $1 | ./extract-labels) 		\
+  <(zcat $2 | ./extractfeatures))               \
+<(paste -d' '                                   \
+  <(zcat $1 | ./extract-labels)			\
+  <(zcat $2 | ./extractfeatures))
+
+time ../../pca -c -k 50 -q pr -m sq$3                                   \
+  <(paste -d' '                                                         \
+      <(zcat $1 | ./extract-labels)                     		\
+      <(../../pca -t -e -m $3                                           \
+        <(zcat $2 | ./extractfeatures | perl -pe '$_=" |p $_"'))        \
+      <(zcat $2 | ./extractfeatures | perl -pe '$_=" |r $_"'))          \
+  <(paste -d' '                                                         \
+      <(zcat $1 | ./extract-labels)                     		\
+      <(../../pca -t -e -m $3                                           \
+        <(zcat $2 | ./extractfeatures | perl -pe '$_=" |p $_"'))        \
+      <(zcat $2 | ./extractfeatures | perl -pe '$_=" |r $_"'))

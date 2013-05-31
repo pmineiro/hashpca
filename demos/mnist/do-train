@@ -1,0 +1,29 @@
+#! /bin/zsh
+
+learner() {                                                             \
+  vw -b 20 --oaa 10 -f $1                                               \
+     --loss_function logistic                                           \
+     -q sr                                                              \
+     --l1 5e-10                                                         \
+     --adaptive --invariant --passes 8 -l 1                             \
+     -k --compressed --cache_file $1.cache &&                           \
+  rm -f $1.cache
+}
+
+SHUFFLE='BEGIN { srand 69; };                          
+         $i = int rand 100000;
+         print $b[$i] if $b[$i];
+         $b[$i] = $_; } { print grep { defined $_ } @b;'
+
+paste -d' '                                                                     \
+  <(zcat $2 | ./extract-labels)                                                 \
+  <(../../pca -t -e -m sq$1                                                     \
+      <(paste -d' '                                                             \
+        <(../../pca -t -e -m $1                                                 \
+            <(zcat $3 | ./extractfeatures | perl -pe '$_=" |p $_"')             \
+          | perl -pe '$_=" |p $_"')                                             \
+        <(zcat $3 | ./extractfeatures | perl -pe '$_=" |r $_"'))                \
+    | perl -pe '$_=" |s $_"')                                                   \
+  <(zcat $3 | ./extractfeatures | perl -pe '$_=" |r $_"')                       \
+| perl -ne ${SHUFFLE} |                                                         \
+learner $4

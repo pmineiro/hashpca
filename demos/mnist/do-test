@@ -1,0 +1,13 @@
+#! /bin/zsh
+
+paste -d' '                                                                     \
+  <(zcat $2 | ./extract-labels)                                                 \
+  <(../../pca -t -e -m sq$1.feats                                               \
+      <(paste -d' '                                                             \
+        <(../../pca -t -e -m $1.feats                                           \
+            <(zcat $3 | ./extractfeatures | perl -pe '$_=" |p $_"')             \
+          | perl -pe '$_=" |p $_"')                                             \
+        <(zcat $3 | ./extractfeatures | perl -pe '$_=" |r $_"'))                \
+    | perl -pe '$_=" |s $_"')                                                   \
+  <(zcat $3 | ./extractfeatures | perl -pe '$_=" |r $_"')                       \
+| vw -t -i $1.model -p $4 

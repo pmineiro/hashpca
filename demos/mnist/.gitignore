@@ -1,0 +1,6 @@
+*.feats
+*.gz
+*.cache*
+extractfeatures
+*.model
+*.predictions
