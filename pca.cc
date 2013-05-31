@@ -140,7 +140,7 @@ namespace
               const Eigen::VectorXd& sum,
               double                 n)
     {
-      std::cerr << "writing model ... ";
+      std::cerr << "Writing model ... ";
 
       model << V.rows () << " " << V.cols () - FUDGE << std::endl;
       model 
@@ -230,49 +230,6 @@ namespace
       return 0;
     }
 
-  template<typename Iterator>
-  int 
-  computeu (PcaOptions options,
-            std::istream&          in,
-            std::ostream&          out,
-            const Eigen::MatrixXd& V,
-            const Eigen::VectorXd& mean,
-            const Eigen::VectorXd& sinv,
-            Iterator               iterator)
-    {
-      veedubparse::StandardParse<veedubparse::HashString> parse;
-      SugaryVectorXd Vtx (V.cols ());
-      Eigen::VectorXd u (V.cols ());
-
-      parse (in,
-             [ & ] (bool ok,
-                    const veedubparse::GeneralExample& ex) {
-               if (ok)
-                 {
-                   auto x = iterator (ex);
-
-                   Vtx = x.transpose () * V;
-                   u = sinv.asDiagonal () * (Vtx - mean);
-
-                   if (options.tanhify)
-                     u = u.unaryExpr ([] (double x) { return tanh (0.85 * x); });
-
-                   if (options.normalize)
-                     u.normalize ();
-
-                   if (ex.tag)
-                     out << ex.tag;
-
-                   for (unsigned int i = 0; i < options.rank; ++i)
-                     out << " " << (i+1) << ":" << u (i);
-
-                   out << std::endl << std::flush;
-                 }
-              });
-
-      return 0;
-    }
-
   int
   do_project (PcaOptions    options,
               int           argc,
@@ -318,13 +275,13 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          return computeu (options, in, std::cout, V, mean, sinv, it);
+          return computeu (in, std::cout, V, mean, sinv, it, options.tanhify, options.normalize);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          return computeu (options, in, std::cout, V, mean, sinv, it);
+          return computeu (in, std::cout, V, mean, sinv, it, options.tanhify, options.normalize);
         }
     }
 
@@ -457,8 +414,6 @@ main (int   argc,
       std::cerr << help << std::endl;
       return 1;
     }
-
-  //feenableexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW | FE_UNDERFLOW);
 
   return options.project ? do_project (options, argc, argv)
                          : do_pca (options, argc, argv);

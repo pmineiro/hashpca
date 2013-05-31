@@ -103,6 +103,50 @@ namespace hashpca
 
       return rv;
     }
+
+  template<typename Iterator>
+  int 
+  computeu (std::istream&          in,
+            std::ostream&          out,
+            const Eigen::MatrixXd& V,
+            const Eigen::VectorXd& mean,
+            const Eigen::VectorXd& sinv,
+            Iterator               iterator,
+            bool                   tanhify,
+            bool                   normalize)
+    {
+      veedubparse::StandardParse<veedubparse::HashString> parse;
+      SugaryVectorXd Vtx (V.cols ());
+      Eigen::VectorXd u (V.cols ());
+
+      parse (in,
+             [ & ] (bool ok,
+                    const veedubparse::GeneralExample& ex) {
+               if (ok)
+                 {
+                   auto x = iterator (ex);
+
+                   Vtx = x.transpose () * V;
+                   u = sinv.asDiagonal () * (Vtx - mean);
+
+                   if (tanhify)
+                     u = u.unaryExpr ([] (double x) { return tanh (0.85 * x); });
+
+                   if (normalize)
+                     u.normalize ();
+
+                   if (ex.tag)
+                     out << ex.tag;
+
+                   for (unsigned int i = 0; i < V.cols (); ++i)
+                     out << " " << (i+1) << ":" << u (i);
+
+                   out << std::endl << std::flush;
+                 }
+              });
+
+      return 0;
+    }
 }
 
 #endif // __PCA_HH__
