@@ -12,7 +12,9 @@ a combination of hashing and randomized linear algebra techniques.
 The memory usage is independent of the number of examples so you will
 never run out of memory.  
 
-[libeigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) is required to build.  I use version 3.1.2.
+### Build Notes 
+* [libeigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) is required to build.  We use version 3.1.2.
+* We use [C++11](http://en.wikipedia.org/wiki/C%2B%2B11) features extensively.  gcc 4.6.3 seems to work.
 
 Directions
 -----------
