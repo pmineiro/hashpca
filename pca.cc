@@ -267,7 +267,7 @@ namespace
           return 1;
         }
 
-      Eigen::VectorXd sinv = s.unaryExpr ([] (double x) { return (x < 1e-6) ? 0 : 1.0 / x; });
+      Eigen::VectorXd pinv = s.unaryExpr ([] (double x) { return 1.0 / (1e-6 + x); });
 
       if (options.dashq)
         {
@@ -275,13 +275,13 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          return computeu (in, std::cout, V, mean, sinv, it, options.tanhify, options.normalize);
+          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          return computeu (in, std::cout, V, mean, sinv, it, options.tanhify, options.normalize);
+          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize);
         }
     }
 
