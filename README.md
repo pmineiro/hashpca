@@ -15,6 +15,7 @@ never run out of memory.
 ### Build Notes 
 * [libeigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) is required to build.  We use version 3.1.2.
 * We use [C++11](http://en.wikipedia.org/wiki/C%2B%2B11) features extensively.  gcc 4.6.3 seems to work.
+* [octave](http://www.gnu.org/software/octave/) is required to run the tests.
 
 Directions
 -----------
