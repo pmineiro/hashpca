@@ -42,7 +42,6 @@
 #define __PCA_HH__
 
 #include <cstdlib>
-#include <Eigen/Sparse>
 #include <Eigen/Dense>
 #include "iterator.hh"
 #include "parse.hh"
