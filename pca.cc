@@ -193,7 +193,7 @@ namespace
     }
 
   int  
-  readmodel (PcaOptions         options,
+  readmodel (PcaOptions&        options,
              std::istream&      model,
              hashpca::MatrixXd& V,
              Eigen::VectorXd&   s,
