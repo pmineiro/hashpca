@@ -15,6 +15,11 @@ never run out of memory.
 Directions
 -----------
 
+0. The basic workflow looks like:
+	1. Build a model
+		> pca -c -k 100 -m testmodel inputdata
+	2. Use a model
+		> pca -t -m testmodel inputdata  
 1. The software expects input in [vowpal wabbit format](https://github.com/JohnLangford/vowpal_wabbit/wiki/Input-format).  
 	1. The label is not used but is required, so basically start all your lines with whitespace.
 	2. The importance weight is used but if omitted defaults to 1.
