@@ -11,6 +11,7 @@ followed by the account.
 To execute the demo, type `make demo`.  This will:
 
   * Download the __4.5 Gigabytes__ compressed Twitter graph.
+        * Courtesy of [Kwak et. al.](http://an.kaist.ac.kr/traces/WWW2010.html)
   * Transpose the graph and convert it to vowpal wabbit format.
         * This involves an expensive invocation of sort,
           which uses about 20 Gb of temporary disk space,
