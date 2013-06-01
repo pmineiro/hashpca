@@ -18,4 +18,5 @@ To execute the demo, type `make demo`.  This will:
       and takes about an hour on a fast desktop machine.
   * PCA the output of the previous step.
     * As is typical in machine learning, this is faster
-      than the time it takes to prepare the input format.
+      than the time it takes to prepare the input format,
+      and takes about 10 minutes.
