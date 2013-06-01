@@ -3,10 +3,10 @@ twitter pca demo
 
 __This demo is very disk intensive__.
 
-In this demo PCA is applied to a matrix defined by the following
-relation on Twitter.  This results in an embedding of any Twitter 
-account into a 30 dimensional space based upon the set of users
-followed by the account.  
+In this demo PCA is applied to a matrix defined by the following relation
+on Twitter.  This results in an ``interest fingerprint'' embedding of
+any Twitter account into a 30 dimensional space based upon the set of
+users followed by the account.
 
 To execute the demo, type `make demo`.  This will:
 
