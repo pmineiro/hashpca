@@ -5,7 +5,7 @@ SHELL=/bin/bash
 all:
 	@cat README.md
 
-demo:
+demo: embedding.out
 
 clean:
 
@@ -35,3 +35,7 @@ twitter.pca.gz: twitter_rv.zip perl.check unzip.check sort.check lzop.check gzip
 
 pca.components: twitter.pca.gz ../../pca.check zcat.check
 	time ../../pca -b 1299709 -c -k 30 -m $@ <(zcat $<) <(zcat $<)
+
+embedding.out: pca.components twitter.pca.gz ../../pca.check zcat.check
+	../../pca -t -m $(word 1,$^) <(zcat $(word 2,$^)) | head -1
+

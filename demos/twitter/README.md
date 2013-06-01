@@ -20,3 +20,5 @@ To execute the demo, type `make demo`.  This will:
     * As is typical in machine learning, this is faster
       than the time it takes to prepare the input format,
       and takes about 10 minutes.
+  * As an example, use the resulting model to project Twitter user id 13 (@biz) into the latent space.
+    * The projection is based upon the set of users that @biz was following at the time of the graph snapshot (2009).
