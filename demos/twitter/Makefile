@@ -33,5 +33,5 @@ twitter.pca.gz: twitter_rv.zip perl.check unzip.check sort.check lzop.check gzip
 	            | perl -lane $(TWITTER2SVD) 			\
 		    | gzip > $@
 
-pca.components: twitter.pca.gz perl.check ../../pca.check gzip.check zcat.check
+pca.components: twitter.pca.gz ../../pca.check zcat.check
 	time ../../pca -b 1299709 -c -k 30 -m $@ <(zcat $<) <(zcat $<)
