@@ -52,6 +52,8 @@
 namespace
 {
   using namespace hashpca;
+  using veedubparse::HashAll;
+  using veedubparse::HashString;
 
   // http://www0.cs.ucl.ac.uk/staff/d.jones/GoodPracticeRNG.pdf
 
@@ -144,7 +146,7 @@ namespace
     {
       std::cerr << "Writing model ... ";
 
-      model << V.rows () << " " << V.cols () - FUDGE << std::endl;
+      model << V.rows () << " " << V.cols () - FUDGE << " " << options.hashall << std::endl;
       model 
         << (options.dashq ? static_cast<unsigned char> (options.dashq[0]) : -1) 
         << " "
@@ -199,7 +201,7 @@ namespace
              Eigen::VectorXd&   s,
              Eigen::VectorXd&   mean)
     {
-      model >> options.hashsize >> options.rank;
+      model >> options.hashsize >> options.rank >> options.hashall;
 
       int a;
       int b;
@@ -278,13 +280,17 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
+          return (options.hashall) 
+            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush)
+            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          return computeu (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
+          return (options.hashall)
+            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush)
+            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
         }
     }
 
@@ -340,13 +346,17 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          lines1 = pca_accumulate (in, Y, Omega, it, options.center, sum);
+          lines1 = (options.hashall)
+            ? pca_accumulate<HashAll> (in, Y, Omega, it, options.center, sum)
+            : pca_accumulate<HashString> (in, Y, Omega, it, options.center, sum);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          lines1 = pca_accumulate (in, Y, Omega, it, options.center, sum);
+          lines1 = (options.hashall)
+            ? pca_accumulate<HashAll> (in, Y, Omega, it, options.center, sum)
+            : pca_accumulate<HashString> (in, Y, Omega, it, options.center, sum);
         }
 
       std::cerr << "(" << lines1.first << ", " 
@@ -368,13 +378,17 @@ namespace
                                static_cast<unsigned char> (options.dashq[0]),
                                static_cast<unsigned char> (options.dashq[1]));
 
-          lines2 = pca_accumulate (in2, Z, Y, it, options.center, sum);
+          lines2 = (options.hashall)
+            ? pca_accumulate<HashAll> (in2, Z, Y, it, options.center, sum)
+            : pca_accumulate<HashString> (in2, Z, Y, it, options.center, sum);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
-          lines2 = pca_accumulate (in2, Z, Y, it, options.center, sum);
+          lines2 = (options.hashall)
+            ? pca_accumulate<HashAll> (in2, Z, Y, it, options.center, sum)
+            : pca_accumulate<HashString> (in2, Z, Y, it, options.center, sum);
         }
 
       std::cerr << "(" << lines2.first << ", " 

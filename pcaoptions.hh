@@ -55,6 +55,7 @@ namespace hashpca
                     -e        : evidence normalize\n\
                     -s        : tanh(0.85)ify\n\
                     -c        : center data\n\
+                    -a        : hash all features (including integers)\n\
                     -q ab     : pair features from a and b\n";
 
   struct PcaOptions
@@ -67,6 +68,7 @@ namespace hashpca
       bool normalize;
       bool tanhify;
       bool center;
+      bool hashall;
       const char* dashq;
   
       PcaOptions () : hashsize (65536),
@@ -77,6 +79,7 @@ namespace hashpca
                       normalize (false),
                       tanhify (false),
                       center (false),
+                      hashall (false),
                       dashq (0)
         {
         }
@@ -162,6 +165,9 @@ namespace hashpca
                 break;
               case 'c':
                 options.center = true;
+                break;
+              case 'a':
+                options.hashall = true;
                 break;
               case 'm':
                 --argc;

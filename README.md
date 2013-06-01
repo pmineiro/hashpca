@@ -36,7 +36,7 @@ Directions
 
         >  pca -k 100 -m testmodel <(zcat compressed.gz) <(zcat compressed.gz)
 	2. If you supply one argument when building a model the software will open that argument twice and access the data from each opened version sequentially without seeking.  This is useful when composed with [named pipes](https://en.wikipedia.org/wiki/Named_pipe).
-3. The software does the equivalent of the [--hash strings](https://github.com/JohnLangford/vowpal_wabbit/wiki/Feature-Hashing-and-Extraction#the---hash-command-line-option) option of vowpal wabbit, i.e., the hash of something that parses as an integer is that integer.  By placing data in namespace 0 and using integer feature values the hashing essentially becomes the identity function (mod the number of hash buckets).  For example, a line like
+3. By default the software does the equivalent of the [--hash strings](https://github.com/JohnLangford/vowpal_wabbit/wiki/Feature-Hashing-and-Extraction#the---hash-command-line-option) option of vowpal wabbit, i.e., the hash of something that parses as an integer is that integer (you can get the equivalent of [--hash all](https://github.com/JohnLangford/vowpal_wabbit/wiki/Feature-Hashing-and-Extraction#the---hash-command-line-option) using the command line option `-a`).  By placing data in namespace 0 and using integer feature values the hashing essentially becomes the identity function (mod the number of hash buckets).  For example, a line like
 
         > 6.9 mytag|0 1 2:4 28:0.5
 

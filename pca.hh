@@ -48,7 +48,8 @@
 
 namespace hashpca 
 {
-  template<typename Iterator>
+  template<typename Hash,
+           typename Iterator>
   std::pair<double, uint64_t>
   pca_accumulate (std::istream&            in,
                   hashpca::MatrixXd&       Y,
@@ -58,7 +59,7 @@ namespace hashpca
                   Eigen::VectorXd&         sum)
     {
       std::pair<double, uint64_t> rv (0.0, 0);
-      veedubparse::StandardParse<veedubparse::HashString> parse;
+      veedubparse::StandardParse<Hash> parse;
       SugaryVectorXd xOmega (Omega.cols ());
 
       if (center)
@@ -103,7 +104,8 @@ namespace hashpca
       return rv;
     }
 
-  template<typename Iterator>
+  template<typename Hash,
+           typename Iterator>
   int 
   computeu (std::istream&            in,
             std::ostream&            out,
@@ -115,7 +117,7 @@ namespace hashpca
             bool                     normalize,
             bool                     flush)
     {
-      veedubparse::StandardParse<veedubparse::HashString> parse;
+      veedubparse::StandardParse<Hash> parse;
       SugaryVectorXd Vtx (V.cols ());
       Eigen::VectorXd u (V.cols ());
 
