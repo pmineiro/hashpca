@@ -1,7 +1,7 @@
 twitter pca demo
 --------------
 
-__This demo is very disk intensive__.
+__This demo is disk intensive__.
 
 In this demo PCA is applied to a matrix defined by the following relation
 on Twitter.  This results in an ``interest fingerprint'' embedding of

@@ -1,3 +1,8 @@
 *.gz
 *.zip
 pca.components
+allusers
+coords
+data.dat
+result.dat
+topusers.pca.out

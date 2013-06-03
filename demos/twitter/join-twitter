@@ -1,0 +1,98 @@
+#! /usr/bin/env perl
+
+use warnings;
+use strict;
+
+use LWP::Simple;
+
+sub read_cache ($)
+{
+  my ($file) = @_;
+  my %cache;
+
+  my $fh = new IO::File $file, "r";
+
+  if ($fh)
+    {
+      while (defined ($_ = <$fh>))
+        {
+          chomp;
+          my ($id, $result) = split /\t/, $_;
+
+          $cache{$id} = $result;
+        }
+    }
+
+  return \%cache;
+}
+
+sub write_cache ($$)
+{
+  my ($file, $cache) = @_;
+
+  my $fh = new IO::File "${file}.writing", "w" or die;
+
+  while (my ($k, $v) = each %$cache)
+    {
+      $v =~ s/\s/ /g;
+      print $fh "$k\t$v\n";
+    }
+
+  $fh->close ();
+
+  rename "${file}.writing", $file;
+}
+
+sub lookup ($$)
+{
+  my ($id, $cache) = @_;
+
+  return $cache->{$id} if exists $cache->{$id};
+
+  return undef if $ENV{'NO_LOOKUP'};
+
+  my $content = get ("http://api.twitter.com/1/users/show.xml?user_id=$id");
+
+  if ($content)
+    {
+      $content =~ s/\s/ /g;
+      $cache->{$id} = $content;
+    }
+
+  sleep 12 if $ENV{'SLOW'};
+
+  return $content;
+}
+
+sub screen_name ($)
+{
+  my ($what) = @_;
+
+  return "_unknown_" unless defined ($what);
+
+  if ($ENV{'NOT_FAMOUS'})
+    {
+      $what =~ m%<followers_count>(.*?)</followers_count>%;
+      return "_notfamous_" unless $1 > 2000000;
+    }
+
+  $what =~ m%<screen_name>(.*?)</screen_name>%;
+
+  return $1 ? $1 : "_badparse_";
+}
+
+#---------------------------------------------------------------------
+#                                mainz                                
+#---------------------------------------------------------------------
+
+my $cachefile = shift @ARGV or die;
+my $cache = read_cache ($cachefile);
+
+END { write_cache ($cachefile, $cache); }
+
+while (defined ($_ = <>))
+  {
+    my ($id, $rest) = split /\s+/, $_, 2;
+
+    print join " ", screen_name (lookup ($id, $cache)), $rest;
+  }
