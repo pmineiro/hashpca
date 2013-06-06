@@ -13,6 +13,7 @@ The memory usage is independent of the number of examples so you will
 never run out of memory.  
 
 ### Build Notes 
+* [veedubparse](https://github.com/pmineiro/veedubparse) is required to build.  If you git clone that project into ../veedubparse than it will find it, otherwise tweak the Makefile.
 * [libeigen3](http://eigen.tuxfamily.org/index.php?title=Main_Page) is required to build.  We use version 3.1.2.
 * We use [C++11](http://en.wikipedia.org/wiki/C%2B%2B11) features extensively.  gcc 4.6.3 works with `-std=c++0x`.
 * [octave](http://www.gnu.org/software/octave/) is required to run the tests.
