@@ -1,0 +1,37 @@
+#! /usr/bin/env perl
+
+use warnings;
+use strict;
+
+binmode (STDIN, ':raw');
+
+local $\="\n";
+
+my $header; sysread (STDIN, $header, 8);
+my ($Nl, $no_dims) = unpack 'll', $header;
+
+#warn "$Nl $no_dims";
+
+my @mappedx;
+
+foreach (1 .. $Nl)
+  {
+    my $buf; sysread (STDIN, $buf, 8 * $no_dims);
+    my @v = unpack "d[$no_dims]", $buf;
+
+    push @mappedx, \@v;
+  }
+
+my @landmarks;
+
+foreach (1 .. $Nl)
+  {
+    my $buf; sysread (STDIN, $buf, 4);
+    my $v = unpack 'l', $buf;
+    push @landmarks, $v;
+  }
+
+foreach (0 .. $#mappedx)
+  {
+    print join "\t", $landmarks[$_], @{$mappedx[$_]};
+  }

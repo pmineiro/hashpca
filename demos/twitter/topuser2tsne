@@ -1,0 +1,38 @@
+#! /usr/bin/env perl
+
+use warnings;
+use strict;
+
+binmode (STDOUT, ':raw');
+
+my @data;
+my $D = 0;
+
+while (defined ($_ = <>))
+  {
+    chomp;
+    my ($id, @rest) = split /\s+/, $_;
+
+    my @v;
+    foreach (@rest)
+      {
+        m%(\d+):(\S+)% or die;
+        $v[$1-1] = $2;
+        $D = $1 if $D < $1;
+      }
+
+    push @data, [ $id, \@v ];
+  }
+
+my $N = scalar @data;
+my $perplexity = 6.25;
+my $ratio_landmarks = 1;
+
+my $header = pack 'llldd', $N, $D, 2, $perplexity, $ratio_landmarks;
+print $header;
+
+foreach my $x (@data)
+  {
+    my $v = pack "d[$D]", @{$x->[1]};
+    print $v;
+  }
