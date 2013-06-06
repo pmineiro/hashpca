@@ -5,9 +5,7 @@ all: check
 clean:
 	rm -f data s u v testmodel
 
-check: testparse.ok testsvd.ok testpca.ok 
-
-testparse: testparse.cc
+check: testsvd.ok testpca.ok 
 
 %.ok: % 
 	@echo "=== running test $(word 1,$^) ===" 1>&2
