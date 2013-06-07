@@ -182,7 +182,7 @@ namespace hashpca
 
   struct SugaryVectorXd : public Eigen::VectorXd
     {
-      SugaryVectorXd (unsigned int cols) : Eigen::VectorXd (cols) { };
+      SugaryVectorXd (unsigned int rows) : Eigen::VectorXd (rows) { };
 
       template<typename Iterator>
       SugaryVectorXd&
