@@ -292,10 +292,10 @@ namespace
       options.rank += FUDGE;
 
       hashpca::MatrixXd Y; Y.setZero (options.hashsize, options.rank);
-      hashpca::MatrixXd Omega (options.hashsize, options.rank);
+      hashpca::MatrixXd Omega =
+        hashpca::MatrixXd::Zero (options.hashsize, options.rank)
+          .unaryExpr (std::ptr_fun (gensample));
       Eigen::VectorXd sum;
-
-      Omega = Omega.unaryExpr (std::ptr_fun (gensample));
 
       std::cerr << "Processing examples ... ";
       std::pair<double, uint64_t> lines1;
