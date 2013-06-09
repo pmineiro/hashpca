@@ -241,16 +241,16 @@ namespace
                                static_cast<unsigned char> (options.dashq[1]));
 
           return (options.hashall) 
-            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush)
-            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
+            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options)
+            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options);
         }
       else
         {
           LinearIterator it (options.hashsize);
 
           return (options.hashall)
-            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush)
-            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options.tanhify, options.normalize, options.flush);
+            ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options)
+            : computeu<HashString> (in, std::cout, V, mean, pinv, it, options);
         }
     }
 

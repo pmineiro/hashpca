@@ -15,6 +15,7 @@ namespace hashpca
                     -e        : evidence normalize\n\
                     -s        : tanh(0.85)ify\n\
                     -c        : center data\n\
+                    -w        : do not whiten projection\n\
                     -a        : hash all features (including integers)\n\
                     -q ab     : pair features from a and b\n";
 
@@ -28,6 +29,7 @@ namespace hashpca
       bool normalize;
       bool tanhify;
       bool center;
+      bool whiten;
       bool hashall;
       const char* dashq;
   
@@ -39,6 +41,7 @@ namespace hashpca
                       normalize (false),
                       tanhify (false),
                       center (false),
+                      whiten (true),
                       hashall (false),
                       dashq (0)
         {
@@ -125,6 +128,9 @@ namespace hashpca
                 break;
               case 'c':
                 options.center = true;
+                break;
+              case 'w':
+                options.whiten = false;
                 break;
               case 'a':
                 options.hashall = true;

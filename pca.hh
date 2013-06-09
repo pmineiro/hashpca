@@ -5,6 +5,7 @@
 #include <Eigen/Dense>
 #include "iterator.hh"
 #include "parse.hh"
+#include "pcaoptions.hh"
 
 namespace hashpca 
 {
@@ -73,9 +74,7 @@ namespace hashpca
             const Eigen::VectorXd&   mean,
             const Eigen::VectorXd&   sinv,
             Iterator                 iterator,
-            bool                     tanhify,
-            bool                     normalize,
-            bool                     flush)
+            PcaOptions               options)
     {
       veedubparse::StandardParse<Hash> parse;
       SugaryVectorXd Vtx (V.cols ());
@@ -89,12 +88,15 @@ namespace hashpca
                    auto x = iterator (ex);
 
                    Vtx = x.transpose () * V;
-                   u = sinv.asDiagonal () * (Vtx - mean);
+                   if (options.whiten)
+                     u = sinv.asDiagonal () * (Vtx - mean);
+                   else
+                     u = Vtx - mean;
 
-                   if (tanhify)
+                   if (options.tanhify)
                      u = u.unaryExpr ([] (double x) { return tanh (0.85 * x); });
 
-                   if (normalize)
+                   if (options.normalize)
                      u.normalize ();
 
                    if (ex.tag)
@@ -105,7 +107,7 @@ namespace hashpca
 
                    out << std::endl;
                    
-                   if (flush)
+                   if (options.flush)
                      out << std::flush;
                  }
               });
