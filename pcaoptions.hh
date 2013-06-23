@@ -33,7 +33,7 @@ namespace hashpca
       bool hashall;
       const char* dashq;
   
-      PcaOptions () : hashsize (65536),
+      PcaOptions () : hashsize (65535),
                       rank (40),
                       model (0),
                       project (false),
