@@ -88,10 +88,18 @@ namespace hashpca
                    auto x = iterator (ex);
 
                    Vtx = x.transpose () * V;
-                   if (options.whiten)
-                     u = sinv.asDiagonal () * (Vtx - mean);
-                   else
-                     u = Vtx - mean;
+                   switch (options.whiten)
+                     {
+                       case PcaOptions::ALL:
+                         u = sinv.asDiagonal () * (Vtx - mean);
+                         break;
+                       case PcaOptions::FIRST:
+                         u = sinv (0) * (Vtx - mean);
+                         break;
+                       case PcaOptions::NONE:
+                         u = Vtx - mean;
+                         break;
+                     }
 
                    if (options.tanhify)
                      u = u.unaryExpr ([] (double x) { return tanh (0.85 * x); });

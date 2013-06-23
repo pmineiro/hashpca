@@ -16,11 +16,14 @@ namespace hashpca
                     -s        : tanh(0.85)ify\n\
                     -c        : center data\n\
                     -w        : do not whiten projection\n\
+                    -w0       : whiten only first component, scale others\n\
                     -a        : hash all features (including integers)\n\
                     -q ab     : pair features from a and b\n";
 
   struct PcaOptions
     {
+      typedef enum { ALL, NONE, FIRST } WhitenType;
+
       unsigned int hashsize;
       unsigned int rank;
       const char* model;
@@ -29,7 +32,7 @@ namespace hashpca
       bool normalize;
       bool tanhify;
       bool center;
-      bool whiten;
+      WhitenType whiten;
       bool hashall;
       const char* dashq;
   
@@ -41,7 +44,7 @@ namespace hashpca
                       normalize (false),
                       tanhify (false),
                       center (false),
-                      whiten (true),
+                      whiten (ALL),
                       hashall (false),
                       dashq (0)
         {
@@ -130,7 +133,8 @@ namespace hashpca
                 options.center = true;
                 break;
               case 'w':
-                options.whiten = false;
+                options.whiten = (argv[0][2] == '0') ? PcaOptions::FIRST
+                                                     : PcaOptions::NONE;
                 break;
               case 'a':
                 options.hashall = true;
