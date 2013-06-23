@@ -7,7 +7,7 @@
 namespace hashpca 
 {
   const char* help="Usage: pca [options] input [input2]\nAvailable options:\n\
-                    -b <int>  : size of feature hash (default: 65536)\n\
+                    -b <int>  : size of feature hash (default: 65535)\n\
                     -k <int>  : rank of approximation (default: 40)\n\
                     -m <name> : model file\n\
                     -t        : projection mode\n\
