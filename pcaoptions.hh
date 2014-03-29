@@ -11,6 +11,7 @@ namespace hashpca
                     -k <int>  : rank of approximation (default: 40)\n\
                     -m <name> : model file\n\
                     -t        : projection mode\n\
+                    -z        : dont prefix projection with index\n\
                     -f        : flush after each output line\n\
                     -e        : evidence normalize\n\
                     -s        : tanh(0.85)ify\n\
@@ -28,6 +29,7 @@ namespace hashpca
       unsigned int rank;
       const char* model;
       bool project;
+      bool withprefix;
       bool flush;
       bool normalize;
       bool tanhify;
@@ -40,6 +42,7 @@ namespace hashpca
                       rank (40),
                       model (0),
                       project (false),
+                      withprefix (true),
                       flush (false),
                       normalize (false),
                       tanhify (false),
@@ -125,6 +128,9 @@ namespace hashpca
                 break;
               case 't':
                 options.project = true;
+                break;
+              case 'z':
+                options.withprefix = false;
                 break;
               case 'f':
                 options.flush = true;

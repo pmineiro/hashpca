@@ -110,8 +110,12 @@ namespace hashpca
                    if (ex.tag)
                      out << ex.tag;
 
-                   for (unsigned int i = 0; i < V.cols (); ++i)
-                     out << " " << (i+1) << ":" << u (i);
+                   if (options.withprefix)
+                     for (unsigned int i = 0; i < V.cols (); ++i)
+                       out << " " << (i+1) << ":" << u (i);
+                   else
+                     for (unsigned int i = 0; i < V.cols (); ++i)
+                       out << " " << u (i);
 
                    out << std::endl;
                    
