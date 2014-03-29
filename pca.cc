@@ -196,19 +196,17 @@ namespace
     }
 
   int
-  do_project (PcaOptions    options,
-              int           argc,
-              char*         argv[])
+  do_project_two (std::istream& in,
+                  PcaOptions    options,
+                  int           argc,
+                  char*         argv[])
     {
       (void) argc;
 
-      std::ifstream in (argv[0]);
-
       if (! in.good ())
         {
-          std::cerr << "ERROR: failed to open file '" 
-                    << argv[0] << "' for reading: " 
-                    << strerror (errno) << std::endl;
+          std::cerr << "ERROR: input is not good" << std::endl;
+
           return 1;
         }
 
@@ -251,6 +249,31 @@ namespace
           return (options.hashall)
             ? computeu<HashAll> (in, std::cout, V, mean, pinv, it, options)
             : computeu<HashString> (in, std::cout, V, mean, pinv, it, options);
+        }
+    }
+
+  int
+  do_project (PcaOptions    options,
+              int           argc,
+              char*         argv[])
+    {
+      if (argc < 1)
+        {
+          return do_project_two (std::cin, options, argc, argv);
+        }
+      else
+        {
+          std::ifstream in (argv[0]);
+
+          if (! in.good ())
+            {
+              std::cerr << "ERROR: failed to open file '" 
+                        << argv[0] << "' for reading: " 
+                        << strerror (errno) << std::endl;
+              return 1;
+            }
+
+          return do_project_two (in, options, argc, argv);
         }
     }
 
@@ -378,7 +401,7 @@ main (int   argc,
 
   PcaOptions options = parse_pca_options (argc, argv);
 
-  if (argc < 1)
+  if (! options.project && argc < 1)
     {
       std::cerr << "ERROR: did not specify input file\n" << std::endl;
       std::cerr << help << std::endl;

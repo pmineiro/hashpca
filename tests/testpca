@@ -46,6 +46,6 @@ set -e
 octave -q testpca.m
 ../pca -c -k 100 -m testmodel <(perl -lane ${INPUTIFY} data) <(perl -lane ${INPUTIFY} data)
 perl -e ${FUZZYDIFF}                                            \
-  <(../pca -t -m testmodel <(perl -lane ${INPUTIFY} data))      \
+  <(perl -lane ${INPUTIFY} data | ../pca -t -m testmodel)       \
   <(perl -lane ${INDEXIFY} u)
 rm -f data s u v testmodel
